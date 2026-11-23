@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Hoki Station: Mulai Menulis</title>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;700;800&display=swap" rel="stylesheet">
+<style>
+:root{--navy:#142B50;--blue:#2589F5;--gray:#F1F5F9;--gold:#E0A526;--green:#2E9E6B}
+*{box-sizing:border-box}
+html,body{height:100%;margin:0}
+body{font-family:Nunito,system-ui,sans-serif;background:var(--navy);color:var(--navy);display:flex;flex-direction:column}
+#stage{flex:1;min-height:260px;position:relative;overflow:hidden}
+#stage svg{width:100%;height:100%;display:block}
+#saga{opacity:0;transform:translateX(26px);transition:opacity .5s,transform .5s}
+svg.on #saga{opacity:1;transform:none}
+.e-l,.m-l,.m-s,.b-s,#scr2{display:none}
+svg.l .e-n,svg.l .m-n{display:none}svg.l .e-l,svg.l .m-l{display:inline}
+svg.x .m-n,svg.x .b-n{display:none}svg.x .m-s,svg.x .b-s{display:inline}
+svg.h #scr1{display:none}svg.h #scr2{display:inline}
+@media(prefers-reduced-motion:reduce){#saga{transition:none}}
+#card{background:#fff;border-top:6px solid var(--blue);border-radius:16px 16px 0 0;padding:26px 22px calc(22px + env(safe-area-inset-bottom,0px));min-height:230px;max-height:82vh;overflow:auto;position:relative}
+#who{position:absolute;top:-6px;left:18px;transform:translateY(-100%);background:var(--blue);color:#fff;font-weight:800;padding:5px 16px;border-radius:10px 10px 0 0;font-size:15px}
+#who:empty{display:none}
+#txt{font-size:18px;line-height:1.65;max-width:62ch;margin:0 auto}
+.n{font-style:italic;color:#3d5278}
+.go{max-width:62ch;margin:14px auto 0;text-align:right;color:var(--blue);font-weight:700;font-size:14px;animation:b 1.4s infinite}
+@keyframes b{50%{opacity:.25}}
+@media(prefers-reduced-motion:reduce){.go{animation:none}}
+.ch{max-width:62ch;margin:18px auto 0;display:grid;gap:10px}
+button{font:inherit;cursor:pointer}
+.ch button,.act button{border:2px solid var(--blue);background:var(--gray);color:var(--navy);padding:12px 16px;border-radius:12px;font-weight:700;text-align:left}
+.ch button:hover,.act button:hover{background:var(--blue);color:#fff}
+button:focus-visible,textarea:focus-visible{outline:3px solid var(--gold);outline-offset:2px}
+.w{max-width:62ch;margin:0 auto}
+.w p{margin:0 0 10px;line-height:1.55}
+.starter{background:var(--gray);border-left:5px solid var(--blue);padding:10px 14px;border-radius:0 10px 10px 0;font-weight:700}
+textarea{width:100%;min-height:150px;border:2px solid #c5d3e6;border-radius:12px;padding:12px;font:inherit;font-size:17px;line-height:1.6;resize:vertical}
+.bar{height:10px;background:var(--gray);border-radius:6px;overflow:hidden;margin:10px 0 4px}
+.bar b{display:block;height:100%;width:0;background:var(--blue);transition:width .25s}
+.bar.ok b{background:var(--gold)}
+.meta{display:flex;justify-content:space-between;font-size:14px;font-weight:700}
+.badge{display:none;margin:12px 0;padding:12px 14px;border-radius:12px;background:#FFF4D6;border:2px solid var(--gold);font-weight:800}
+.badge.on{display:block}
+.act{display:flex;gap:10px;flex-wrap:wrap;margin-top:10px}
+.act a{display:inline-block;border:2px solid var(--blue);background:var(--blue);color:#fff;padding:12px 16px;border-radius:12px;font-weight:800;text-decoration:none}.act a:hover{background:var(--navy);border-color:var(--navy)}.act a:focus-visible{outline:3px solid var(--gold);outline-offset:2px}.act button:disabled{opacity:.45;cursor:not-allowed;background:var(--gray);color:var(--navy)}
+</style>
+</head>
+<body>
+<div id="stage" aria-hidden="true"><svg id="art" viewBox="0 0 400 300" preserveAspectRatio="xMidYMax slice" xmlns="http://www.w3.org/2000/svg">
+<rect width="400" height="210" fill="#dfe9f5"/>
+<rect x="148" y="28" width="104" height="86" rx="4" fill="#142B50"/><rect x="154" y="34" width="92" height="74" fill="#bfe0ff"/><path d="M200 34V108M154 71H246" stroke="#142B50" stroke-width="3"/><path d="M154 34L190 34L154 78Z" fill="#fff" opacity=".45"/>
+<rect x="0" y="20" width="118" height="176" fill="#6b4a33"/><rect x="282" y="20" width="118" height="176" fill="#6b4a33"/>
+<g fill="#4a3324"><rect x="0" y="86" width="118" height="5"/><rect x="0" y="138" width="118" height="5"/><rect x="0" y="190" width="118" height="6"/><rect x="282" y="86" width="118" height="5"/><rect x="282" y="138" width="118" height="5"/><rect x="282" y="190" width="118" height="6"/></g>
+<g id="books"></g>
+<rect y="206" width="400" height="94" fill="#b99b7a"/><rect y="200" width="400" height="8" fill="#f1f5f9"/>
+<g id="saga">
+<path d="M148 262Q150 180 205 170Q260 180 262 262Z" fill="#fff" stroke="#c5d3e6" stroke-width="2"/>
+<path d="M190 171L205 189L220 171" fill="none" stroke="#c5d3e6" stroke-width="2.5"/>
+<rect x="226" y="204" width="24" height="15" rx="2" fill="#2589F5"/><text x="229" y="215" font-size="9" font-weight="800" fill="#fff" font-family="Nunito,sans-serif">11-4</text>
+<rect x="195" y="150" width="20" height="26" fill="#e8b992"/>
+<circle cx="172" cy="126" r="6" fill="#e8b992"/><circle cx="238" cy="126" r="6" fill="#e8b992"/>
+<ellipse cx="205" cy="122" rx="33" ry="36" fill="#f1c9a5"/>
+<path d="M170 118Q167 80 205 77Q244 80 240 118Q232 98 220 100L214 92L204 104L194 92L188 104Q176 100 170 118Z" fill="#1e2433"/>
+<path d="M184 88L176 72L197 83ZM204 80L209 64L217 80ZM222 85L237 74L235 91Z" fill="#1e2433"/>
+<circle cx="186" cy="136" r="5" fill="#f4a6a0" opacity=".5"/><circle cx="224" cy="136" r="5" fill="#f4a6a0" opacity=".5"/>
+<g class="e-n" fill="#1e2433"><ellipse cx="192" cy="125" rx="3.3" ry="4.4"/><ellipse cx="218" cy="125" rx="3.3" ry="4.4"/></g>
+<g class="e-l" fill="none" stroke="#1e2433" stroke-width="3" stroke-linecap="round"><path d="M185 127Q192 118 199 127"/><path d="M211 127Q218 118 225 127"/></g>
+<g class="b-n" stroke="#1e2433" stroke-width="2.5" stroke-linecap="round"><path d="M186 114L198 113M212 113L224 114"/></g>
+<g class="b-s" stroke="#1e2433" stroke-width="2.5" stroke-linecap="round"><path d="M186 111L198 117M212 117L224 111"/></g>
+<path class="m-n" d="M196 143Q205 150 214 143" fill="none" stroke="#8a3b3b" stroke-width="2.5" stroke-linecap="round"/>
+<path class="m-l" d="M193 140Q205 158 217 140Z" fill="#8a3b3b"/>
+<path class="m-s" d="M198 145L212 145" stroke="#8a3b3b" stroke-width="2.5" stroke-linecap="round"/>
+</g>
+<rect y="256" width="400" height="44" fill="#a9825a"/><rect y="256" width="400" height="5" fill="#8f6b46"/>
+<g id="laptop"><rect x="112" y="190" width="186" height="84" rx="6" fill="#142B50"/><rect x="119" y="197" width="172" height="70" rx="3" fill="#fff"/>
+<g id="scr1" fill="#c5d3e6"><rect x="128" y="207" width="120" height="4"/><rect x="128" y="217" width="148" height="4"/><rect x="128" y="227" width="92" height="4"/><rect x="128" y="237" width="134" height="4"/><rect x="128" y="247" width="62" height="4"/><path d="M128 259q8-7 16 0t16 0t16 0" fill="none" stroke="#d9534f" stroke-width="2"/></g>
+<g id="scr2"><rect x="119" y="197" width="172" height="17" fill="#2589F5"/><text x="128" y="209" font-size="10" font-weight="800" fill="#fff" font-family="Nunito,sans-serif">HOKI STATION</text><g fill="#c5d3e6"><rect x="128" y="224" width="100" height="4"/><rect x="128" y="234" width="130" height="4"/><rect x="128" y="244" width="78" height="4"/></g><circle cx="266" cy="246" r="11" fill="#E0A526"/><path d="M261 246l4 4 7-8" fill="none" stroke="#fff" stroke-width="2.5" stroke-linecap="round"/></g>
+<path d="M96 274H314L304 286H106Z" fill="#c9d1dc"/></g>
+</svg></div>
+<main id="card" tabindex="0" aria-live="polite">
+  <div id="who"></div>
+  <div id="txt"></div>
+  <div id="area"></div>
+</main>
+<script>
+(function(){var c=['#2589F5','#1c6fd0','#E0A526','#F1F5F9','#5b7db5','#2E9E6B','#c9d6ea','#d9534f'],ns='http://www.w3.org/2000/svg',g=document.getElementById('books');
+[[0,118],[282,400]].forEach(function(r){[40,92,144].forEach(function(y){var x=r[0]+4;while(x<r[1]-12){var w=7+Math.random()*7,h=32+Math.random()*12,e=document.createElementNS(ns,'rect');e.setAttribute('x',x);e.setAttribute('y',y+(46-h));e.setAttribute('width',w);e.setAttribute('height',h);e.setAttribute('rx',1);e.setAttribute('fill',c[Math.floor(Math.random()*c.length)]);g.appendChild(e);x+=w+1.5;}})});})();
+var mood='n',st=document.getElementById('art');
+var rules=[['tertawa kecil','l'],['Semua penulis','n'],['menatapmu serius','x'],['Sip.','l'],['Gak apa-apa','n']];
+function stage(l,end){
+  if(l.x){rules.forEach(function(r){if(l.x.indexOf(r[0])>-1)mood=r[1]})}
+  if(end)mood='l';
+  st.setAttribute('class',(i>=1||end?'on ':'')+mood+(end?' h':''));
+}
+
+var L=[
+{w:'n',x:'Suasana perpustakaan Smanggi Hoki siang itu terasa lebih hidup dari biasanya. Kamu duduk di pojok, menatap layar laptop dengan pandangan kosong. Lagi-lagi buntu. Ditambah suasana perpustakaan yang bising semakin membuatmu lesu. Tiba-tiba—'},
+{w:'s',x:'Eh, kamu lagi sibuk ya?'},
+{w:'n',x:'Kamu menoleh. Seorang siswa berdiri di sampingmu. Rambutnya agak berantakan, tapi senyumnya santai. Seragamnya rapi, terlihat seperti siswa teladan.'},
+{w:'s',x:'Aku Saga. Anak 11-4.'},
+{w:'s',x:'Aku lihat-lihat kamu sering ke sini, kan?'},
+{w:'n',x:'Saga mengalihkan tatapannya pada layar laptopmu yang terbuka. Membuatmu mengikuti arah tatapannya. Sejenak kamu merasa malu, tapi tetap membiarkannya.'},
+{w:'s',x:'Wah, kamu suka nulis, ya?'},
+{w:'n',x:'Merasa malu, kamu mengangguk pelan.'},
+{w:'n',x:'Saga sedikit mencondongkan tubuhnya untuk melihat ke arah tulisanmu yang berantakan di layar laptop.'},
+{w:'s',x:'Tulisanmu bagus, lho. Kenapa nggak dipublish aja di website Hoki Station?'},
+{w:'n',x:'Kamu mengernyit, meringis pelan sebelum menjawab,'},
+{w:'k',x:'Nggak pede.'},
+{w:'n',x:'Saga tertawa kecil. Matanya menyipit membentuk bulan sabit. Dia terlihat lebih manis saat sedang tertawa.'},
+{w:'s',x:'Semua penulis awalnya juga gitu. Tapi kalau nggak mulai, tulisanmu cuma jadi draft selamanya.'},
+{w:'n',x:'Saga menunjuk layar laptopmu. Membuatmu ikut menaruh perhatian ke sana.'},
+{w:'s',x:'Coba deh. Hoki Station itu bukan tempat buat yang udah jago aja, tapi juga buat yang mau berkembang.'},
+{w:'n',x:'Kamu mulai ragu.'},
+{w:'k',x:'Tapi kalau jelek gimana?'},
+{w:'s',x:'Kalau jelek ya diperbaiki. Kalau bagus? Ya dibanggakan. Yang penting nulis aja dulu.'},
+{w:'n',x:'Saga menatapmu serius.'},
+{w:'s',x:'Website itu dibuat biar suara siswa kayak kita bisa didengar.'},
+{c:['Aku coba kirim satu tulisan deh...','Aku masih takut sih...'],r:[
+ [{w:'s',x:'Sip. Aku bantu kalau kamu bingung. Siapa tau tulisanmu jadi favorit minggu ini.'}],
+ [{w:'s',x:'Gak apa-apa. Tapi janji, ya, suatu hari nanti kamu bakal coba.'}]]}
+];
+var HOKI='https://perpustakaansmanggi-hash.github.io/Hoki-Station/#masuk';
+var ends=['Halaman Hoki Station sudah menunggu tulisan pertamamu.','Hoki Station akan tetap ada kapan pun kamu siap.'];
+var i=0,path=[],txt=document.getElementById('txt'),who=document.getElementById('who'),area=document.getElementById('area'),card=document.getElementById('card');
+var names={s:'Saga',k:'Kamu',n:''};
+
+function show(){
+  area.innerHTML='';var l=L[i];stage(l);
+  if(l.c){
+    who.textContent='';txt.innerHTML='<span class="n">Apa yang kamu katakan?</span>';
+    var d=document.createElement('div');d.className='ch';
+    l.c.forEach(function(t,k){var bt=document.createElement('button');bt.textContent=t;bt.onclick=function(e){e.stopPropagation();pick(k)};d.appendChild(bt)});
+    area.appendChild(d);return;
+  }
+  who.textContent=names[l.w];txt.className=l.w==='n'?'n':'';txt.textContent=l.x;
+  var g=document.createElement('div');g.className='go';g.textContent='ketuk untuk lanjut ▾';area.appendChild(g);
+}
+function pick(k){path.push(k);var l=L[i];L.splice.apply(L,[i+1,0,{w:'k',x:l.c[k]}].concat(l.r[k]));i++;show();}
+function next(){
+  if(L[i].c)return;
+  if(i>=L.length-1){write();return;}
+  i++;show();
+}
+card.addEventListener('click',function(e){if(!document.querySelector('.act'))next();});
+document.addEventListener('keydown',function(e){if((e.key==='Enter'||e.key===' ')&&e.target===card&&!document.querySelector('.act')){e.preventDefault();next();}});
+
+function write(){
+  stage({},true);who.textContent='';txt.className='n';txt.textContent=ends[path[0]||0];
+  area.innerHTML='<div class="act w"><a href="'+HOKI+'" target="_blank" rel="noopener">Buka Hoki Station</a><button id="rs">Main lagi</button></div>';
+  document.getElementById('rs').onclick=function(e){e.stopPropagation();location.reload()};
+}
+show();
+</script>
+</body>
+</html>
