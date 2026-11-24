@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="id"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Hoki Station — Prototipe</title>
+<meta name="description" content="Prototipe platform literasi digital Perpustakaan Smanggi Hoki, SMAN 1 Gondanglegi">
+<style>
+:root{--bg:#fff;--bg2:#F1F5F9;--blue:#2589F5;--navy:#142B50;--green:#16A34A;--gold:#D4A017;--line:#dbe3ec;--mut:#5b6b82;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#0f1b2d;--bg2:#17263d;--navy:#e8eef8;--line:#2a3b57;--mut:#9fb0c8}}
+*{box-sizing:border-box}html{scroll-padding-top:env(safe-area-inset-top,0px)}
+body{margin:0;font:16px/1.55 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;background:var(--bg2);color:var(--navy)}
+header{background:var(--bg);border-bottom:1px solid var(--line);position:sticky;top:env(safe-area-inset-top,0px);z-index:5}
+.bar{max-width:1000px;margin:auto;display:flex;align-items:center;gap:12px;padding:10px 16px;flex-wrap:wrap}
+.logo{font-weight:800;color:var(--blue);font-size:19px}.logo small{display:block;font-size:10px;color:var(--mut);font-weight:600;letter-spacing:.5px}
+nav{display:flex;gap:4px;overflow-x:auto;flex:1}
+nav a{padding:8px 12px;border-radius:10px;color:var(--navy);text-decoration:none;font-weight:600;font-size:14px;white-space:nowrap}
+nav a.on{background:var(--blue);color:#fff}
+main{max-width:1000px;margin:auto;padding:16px}
+.card{background:var(--bg);border:1px solid var(--line);border-radius:14px;padding:16px;margin-bottom:16px}
+h2{margin:0 0 10px;font-size:18px}
+.hero{background:var(--blue);color:#fff;border-radius:16px;padding:24px;margin-bottom:16px}
+.hero h1{margin:0 0 6px;font-size:24px}.hero p{margin:0 0 14px;opacity:.95}
+.btn{display:inline-block;border:0;border-radius:10px;padding:10px 16px;font:inherit;font-weight:700;cursor:pointer;background:var(--blue);color:#fff;text-decoration:none;min-height:44px}
+.btn.alt{background:var(--bg2);color:var(--navy);border:1px solid var(--line)}.hero .btn{background:#fff;color:var(--blue)}.hero .btn.alt{background:transparent;color:#fff;border-color:#fff}
+.grid{display:grid;gap:16px;grid-template-columns:repeat(auto-fill,minmax(250px,1fr))}
+.two{display:grid;gap:16px;grid-template-columns:1fr 1fr}@media(max-width:640px){.two{grid-template-columns:1fr}}
+.bar-bg{height:10px;background:var(--bg2);border-radius:99px;overflow:hidden}.bar-fg{height:100%;border-radius:99px;transition:width .3s}
+.tag{display:inline-block;background:var(--bg2);border-radius:99px;padding:2px 10px;font-size:12px;font-weight:700;color:var(--blue)}
+.mut{color:var(--mut);font-size:13px}
+.work{cursor:pointer}.work:hover{border-color:var(--blue)}.work h3{margin:6px 0 4px;font-size:17px}
+input,select,textarea{width:100%;padding:10px 12px;border:1px solid var(--line);border-radius:10px;font:inherit;background:var(--bg);color:var(--navy);margin-bottom:10px}
+.ed{min-height:200px;border:1px solid var(--line);border-radius:10px;padding:12px;outline:none;background:var(--bg)}
+.tools{display:flex;gap:6px;margin-bottom:8px;flex-wrap:wrap}.tools button{min-width:44px}
+.rank{display:flex;align-items:center;gap:10px;padding:8px 0;border-bottom:1px solid var(--line)}.rank:last-child{border:0}
+.pos{width:30px;height:30px;border-radius:50%;display:grid;place-items:center;font-weight:800;background:var(--bg2);font-size:13px}
+.p1{background:#f5d76e;color:#5a4300}.p2{background:#d5dbe3;color:#333}.p3{background:#e0a36b;color:#4a2a08}
+.av{font-size:24px}.sp{flex:1}
+.reader{border-radius:14px;padding:22px;margin:12px 0}
+.t-light{background:#fff;color:#1a1a1a}.t-dark{background:#141414;color:#e4e4e4}.t-warm{background:#f6ecd6;color:#4a3320}
+.warn{color:#b45309;font-size:13px}.ok{color:var(--green);font-size:13px}
+.note{font-size:12px;color:var(--mut);text-align:center;padding:10px}
+.menu{position:absolute;right:0;top:46px;background:var(--bg);border:1px solid var(--line);border-radius:12px;min-width:190px;padding:6px;box-shadow:0 8px 24px rgba(0,0,0,.15)}.menu a,.menu button{display:block;width:100%;text-align:left;padding:10px 12px;border:0;background:none;color:var(--navy);font:inherit;font-weight:600;border-radius:8px;text-decoration:none;cursor:pointer}.menu a:hover,.menu button:hover{background:var(--bg2)}
+details{border-top:1px solid var(--line);padding:8px 0}summary{cursor:pointer;font-weight:700;padding:4px 0}details p{margin:6px 0 4px}
+</style></head><body>
+<header><div class="bar"><div class="logo">HOKI STATION<small>SMAN 1 GONDANGLEGI</small></div>
+<nav id="nav"></nav><div id="acc" style="position:relative"></div></div></header>
+<main id="app"></main>
+<div class="note">Prototipe tampilan: data contoh hanya di memori browser dan hilang saat halaman dimuat ulang. Belum ada backend, akun, atau database.</div>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<script>
+/* Unduhan standar browser (untuk GitHub Pages dan hosting statis lain) */
+if(!window.claude){window.claude={use:function(){return Promise.resolve({save:function(o){var b=(o.data instanceof Blob)?o.data:new Blob([o.data]);var a=document.createElement("a");a.href=URL.createObjectURL(b);a.download=o.filename;document.body.appendChild(a);a.click();a.remove();setTimeout(function(){URL.revokeObjectURL(a.href)},1500);return Promise.resolve()}})}}}
+</script>
+<script>
+var CATS=["Artikel","Berita","Cerpen","Cerbung","Dongeng","Fabel","Novelet","Opini","Pantun","Puisi","Religi","Resensi","Tutorial"];
+var AV=["🍎","🍊","🍋","🍉","🍇","🍓","🍍","🥝","🍑","🥭"];
+var works=[];
+var RK=[];
+var CID=10;
+var NEWS=[];
+var ACCTS=[];var PW={};
+var S={at:"laporan",edit:null,del:0,img:[],aud:null,um:[],user:null,menu:false,reg:false,pick:"",w:0,r:0,theme:"light",size:17,reading:null,liked:{},saved:{},rt:"Mingguan"};
+function $(i){return document.getElementById(i)}
+function esc(s){return String(s).replace(/[&<>"]/g,function(c){return{"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]})}
+function words(s){var m=s.trim().match(/\S+/g);return m?m.length:0}
+function ring(label,val,goal,unit,color){var p=Math.min(100,Math.round(val/goal*100));return '<div class="card"><b>'+label+'</b><div class="mut">'+val+' / '+goal+' '+unit+' · '+p+'%</div><div class="bar-bg"><div class="bar-fg" style="width:'+p+'%;background:'+color+'"></div></div>'+(p>=100?'<div class="ok">Target hari ini tercapai!</div>':'')+'</div>'}
+function card(w){return '<div class="card work" onclick="openWork('+w.id+')"><span class="tag">'+esc(w.c)+'</span><h3>'+esc(w.t)+'</h3><div class="mut">'+w.av+' '+esc(w.a)+' · '+w.d+'</div><p>'+esc(w.x.slice(0,90))+'…</p><div class="mut">👁 '+w.r+' · ♥ '+w.l+' · 💬 '+cc(w)+'</div></div>'}
+function rankList(rows,n){if(!rows.length)return '<p class="mut">Belum ada data ranking.</p>';return rows.slice(0,n).map(function(r,i){return '<div class="rank"><span class="pos p'+(i+1)+'">'+(i+1)+'</span><span class="av">'+r[0]+'</span><span class="sp">'+esc(r[1])+'</span><b>'+r[2]+' poin</b></div>'}).join("")}
+var V={
+beranda:function(){return '<div class="hero"><h1>Selamat datang di Hoki Station</h1><p>Tempat warga SMAN 1 Gondanglegi membaca, menulis, dan berbagi karya.</p><a class="btn" href="#menulis">Mulai menulis</a> <a class="btn alt" href="#karya">Lihat karya</a></div>'
++'<div class="two">'+ring("Target menulis",S.w,50,"kata","var(--blue)")+ring("Target membaca",Math.floor(S.r/60),10,"menit","var(--green)")+'</div>'
++'<div class="two"><div class="card"><h2>Ranking mingguan</h2>'+rankList(RK,5)+'<a class="btn alt" href="#ranking">Ranking lengkap</a></div>'
++'<div class="card"><h2>Berita &amp; pengumuman</h2>'+newsHtml()+'</div></div>'
+},
+menulis:function(){return '<div class="card"><h2>Tulis karya baru</h2><input id="jt" placeholder="Judul karya"><select id="jc">'+CATS.map(function(c){return '<option>'+c+'</option>'}).join("")+'</select>'
++'<div class="tools"><button class="btn alt" onclick="document.execCommand(\'bold\')"><b>B</b></button><button class="btn alt" onclick="document.execCommand(\'italic\')"><i>I</i></button><button class="btn alt" onclick="document.execCommand(\'underline\')"><u>U</u></button></div>'
++'<div id="ed" class="ed" contenteditable="true" oninput="cnt()" role="textbox" aria-label="Isi tulisan"></div><div class="card" style="margin:10px 0"><b>Lampiran</b><div class="mut">Gambar: maksimal 4 foto, tiap foto maksimal 5 MB. Audio: 1 berkas, maksimal 5 MB.</div><input id="fi" type="file" accept="image/*" multiple onchange="addImg(this)"><input id="fa" type="file" accept="audio/*" onchange="addAud(this)"><div id="pv"></div></div><div id="wc" class="mut" style="margin:8px 0"></div><div id="msg"></div>'
++'<button class="btn alt" onclick="draft()">Simpan draf</button> <button class="btn" onclick="pub()">Publikasikan</button></div>'},
+karya:function(){return '<div class="card"><input id="q" placeholder="Cari judul, penulis, atau kata kunci…" oninput="filt()"><select id="fc" onchange="filt()"><option value="">Semua kategori</option>'+CATS.map(function(c){return '<option>'+c+'</option>'}).join("")+'</select><select id="so" onchange="filt()"><option value="n">Terbaru</option><option value="r">Paling banyak dibaca</option><option value="l">Paling banyak disukai</option></select></div><div id="list" class="grid"></div>'},
+ranking:function(){var rows=S.rt=="Harian"?RK.map(function(r){return [r[0],r[1],Math.round(r[2]/4)]}):RK;return '<div class="card"><h2>Ranking '+S.rt.toLowerCase()+'</h2><button class="btn '+(S.rt=="Harian"?"":"alt")+'" onclick="S.rt=\'Harian\';go()">Harian</button> <button class="btn '+(S.rt=="Mingguan"?"":"alt")+'" onclick="S.rt=\'Mingguan\';go()">Mingguan</button><div style="margin-top:10px">'+rankList(rows,10)+'</div><p class="mut">Skor: pembaca unik 1, like 2, komentar 3, share 2. Peringkat 1–3 mendapat badge Gold, Silver, Bronze.</p></div>'},
+admin:function(){if(!S.user||S.user.role!="Admin")return '<div class="card"><h2>Khusus Admin</h2><p class="mut">Halaman ini hanya bisa dibuka akun Admin. Di aplikasi sungguhan, pembatasan ini diperiksa di server.</p></div>';return adminTabs()+AD[S.at]()},
+laporanView:function(){var rd=0,lk=0,km=0,cat={};works.forEach(function(w){rd+=w.r;lk+=w.l;km+=cc(w);cat[w.c]=(cat[w.c]||0)+1});
+var st=[["Total akun",RK.length+1+ACCTS.filter(function(a){return a.st=="Aktif"}).length],["Menunggu verifikasi",pend()],["Total karya",works.length],["Total pembaca",rd],["Total like",lk],["Total komentar",km]];
+var mx=Math.max.apply(null,Object.keys(cat).map(function(k){return cat[k]}));
+return '<div class="card"><h2>Laporan &amp; Statistik</h2><p class="mut">Angka dihitung dari data prototipe saat ini. Di aplikasi sungguhan semua angka berasal dari database, dengan filter harian, bulanan, tahunan, dan rentang tanggal.</p><div class="grid" style="grid-template-columns:repeat(auto-fill,minmax(140px,1fr))">'+st.map(function(s){return '<div class="card" style="margin:0"><div class="mut">'+s[0]+'</div><div style="font-size:26px;font-weight:800;color:var(--blue)">'+s[1]+'</div></div>'}).join("")+'</div></div>'
++'<div class="card"><h2>Karya per kategori</h2>'+(Object.keys(cat).length?'':'<p class="mut">Belum ada karya.</p>')+Object.keys(cat).map(function(k){return '<div style="margin-bottom:8px">'+k+' ('+cat[k]+')<div class="bar-bg"><div class="bar-fg" style="width:'+Math.round(cat[k]/mx*100)+'%;background:var(--blue)"></div></div></div>'}).join("")+'</div>'
++dlCard()+'<div class="card"><h2>Status backup</h2><p><span class="tag">Google Drive: belum terhubung</span></p><p class="mut">Backup otomatis harian, riwayat backup, dan pemulihan aktif setelah backend dan akun Google Drive sekolah dikonfigurasi.</p></div>'},
+panduan:function(){var d=[["Memulai","Buka menu Masuk lalu pilih tab Daftar. Isi nama, username, email, dan password, lalu pilih avatar. Akun baru berstatus Menunggu Verifikasi sampai admin menyetujui dan menetapkan perannya. Setelah disetujui, masuk dengan email atau username dan password Anda."],
+["Menulis dan menerbitkan","Buka menu Menulis, isi judul, pilih kategori, lalu tulis karya Anda. Jumlah kata tampil langsung: minimal 10 dan maksimal 1.000 kata. Gunakan tombol B, I, dan U untuk memformat teks. Anda bisa menambahkan maksimal 4 foto (tiap foto maksimal 5 MB) dan 1 audio (maksimal 5 MB). Tekan Publikasikan dan karya langsung tampil di halaman Karya. Admin tetap dapat menyembunyikan karya yang melanggar aturan."],
+["Membaca dan menyimpan","Di halaman Karya, cari berdasarkan judul, penulis, atau kata kunci, dan saring berdasarkan kategori. Buka sebuah karya untuk membaca. Pilih tema Terang, Gelap, atau Hangat dan ubah ukuran huruf dengan A− dan A+. Pengaturan ini hanya mengubah area bacaan. Tekan Suka untuk mengapresiasi, dan Simpan untuk menaruhnya di Perpustakaan Saya (menu akun di kanan atas)."],
+["Komentar","Di bawah setiap karya Anda bisa menulis komentar (maksimal 500 karakter) dan membalas komentar orang lain. Beri jeda beberapa detik antar komentar. Komentar sendiri bisa dihapus kapan saja. Jika menemukan komentar yang tidak pantas, tekan Lapor agar admin memeriksanya. Gunakan bahasa yang sopan dan membangun."],
+["Target harian dan ranking","Beranda menunjukkan target harian: menulis minimal 50 kata dan membaca aktif 10 menit. Waktu baca hanya dihitung saat halaman bacaan terbuka dan aktif. Ranking dihitung dari aktivitas akun: pembaca unik 1 poin, like 2 poin, komentar 3 poin, dan share 2 poin. Tiga besar mingguan mendapat badge Gold, Silver, dan Bronze."],
+["Aturan bersama","Tulis karya sendiri dan jangan menjiplak. Hindari konten SARA, ujaran kebencian, kekerasan, dan konten dewasa. Jangan membagikan data pribadi, milik sendiri maupun orang lain. Hormati penulis dan pembaca lain. Pelanggaran dapat membuat karya atau komentar disembunyikan oleh admin."]];
+if(S.user&&S.user.role=="Admin")d.push(["Khusus admin","Panel Admin ada di menu akun. Laporan: lihat statistik dan unduh CSV, Excel, atau PDF. Verifikasi: setujui atau tolak pendaftar dan tetapkan perannya. Berita: tulis, edit, dan hapus berita atau pengumuman untuk Beranda. Karya: sembunyikan atau pulihkan karya dan tangani komentar yang dilaporkan. Backup: buat backup manual dan pulihkan data."]);
+return '<div class="card"><h2>Panduan pengguna</h2><p class="mut">Ketuk judul untuk membuka penjelasan.</p>'+d.map(function(x,i){return '<details'+(i==0?' open':'')+'><summary>'+x[0]+'</summary><p>'+x[1]+'</p></details>'}).join("")+'</div>'},
+profil:function(){if(!S.user)return V.masuk();var mine=works.filter(function(w){return w.a==S.user.name});var tot=mine.reduce(function(a,w){return a+w.r},0);
+return '<div class="card" style="text-align:center"><div style="font-size:56px">'+S.user.av+'</div><h2>'+esc(S.user.name)+'</h2><span class="tag">'+S.user.role+'</span><p class="mut">Bergabung November 2026 · '+mine.length+' karya · '+tot+' pembaca</p></div>'
++'<div class="card"><h2>Ganti avatar</h2><div class="tools">'+(S.user.role=="Admin"?'<span class="mut">Akun admin memakai avatar mahkota.</span>':'')+(S.user.role=="Admin"?[]:AV).map(function(a){return '<button class="btn alt" onclick="S.user.av=\''+a+'\';go()">'+a+'</button>'}).join("")+'</div></div>'
++'<div class="card"><h2>Karya saya</h2>'+(mine.length?'<div class="grid">'+mine.map(card).join("")+'</div>':'<p class="mut">Belum ada karya. Mulai dari menu Menulis.</p>')+'</div>'
++'<div class="card"><h2>Prestasi</h2><p class="mut">Badge Gold, Silver, dan Bronze mingguan akan tampil di sini.</p></div>'},
+perpus:function(){if(!S.user)return V.masuk();var l=works.filter(function(w){return S.saved[w.id]});return '<div class="card"><h2>Perpustakaan Saya</h2>'+(l.length?'<div class="grid">'+l.map(card).join("")+'</div>':'<p class="mut">Belum ada karya tersimpan. Buka sebuah karya lalu tekan Simpan.</p>')+'</div>'},
+masuk:function(){var r=S.reg;var f=r?'<input id="f1" placeholder="Nama lengkap"><input id="f2" placeholder="Username"><input id="f3" type="email" placeholder="Email"><input id="f4" type="password" placeholder="Password"><input id="f5" type="password" placeholder="Konfirmasi password"><div class="mut">Pilih avatar</div><div class="tools">'+AV.map(function(a){return '<button class="btn alt" onclick="S.pick=\''+a+'\';this.style.outline=\'2px solid var(--blue)\'">'+a+'</button>'}).join("")+'</div><button class="btn" onclick="reg2()">Daftar</button>':'<input id="lu" placeholder="Email atau username"><input id="lp" type="password" placeholder="Password"><button class="btn" onclick="login()">Masuk</button> <div id="lm" class="warn" style="margin-top:8px"></div>';
+return '<div class="card" style="max-width:440px;margin:auto"><button class="btn '+(r?'alt':'')+'" onclick="S.reg=false;go()">Masuk</button> <button class="btn '+(r?'':'alt')+'" onclick="S.reg=true;go()">Daftar</button><div style="margin-top:12px">'+f+'<div id="rm" style="margin-top:10px"></div></div></div>'},
+baca:function(){var w=works.filter(function(x){return x.id==S.reading})[0];if(!w)return "<p>Karya tidak ditemukan.</p>";
+return '<a class="btn alt" href="#karya">← Kembali</a><div class="card" style="margin-top:12px"><span class="tag">'+esc(w.c)+'</span><h2 style="font-size:22px;margin-top:8px">'+esc(w.t)+'</h2><div class="mut">'+w.av+' '+esc(w.a)+' · '+w.d+' · ±'+Math.max(1,Math.round(words(w.x)/200))+' menit baca</div>'
++'<div class="tools" style="margin-top:10px"><button class="btn alt" onclick="th(\'light\')">Terang</button><button class="btn alt" onclick="th(\'dark\')">Gelap</button><button class="btn alt" onclick="th(\'warm\')">Hangat</button><button class="btn alt" onclick="sz(-1)">A−</button><button class="btn alt" onclick="sz(1)">A+</button><button class="btn alt" onclick="S.size=17;S.theme=\'light\';go()">Reset</button></div>'
++'<div id="rd" class="reader t-'+S.theme+'" style="font-size:'+S.size+'px;line-height:1.8">'+w.x.split("\n").map(function(p){return '<p>'+esc(p)+'</p>'}).join("")+(w.im||[]).map(function(g){return '<img src="'+g.u+'" alt="" style="max-width:100%;border-radius:10px;margin:8px 0">'}).join("")+(w.au?'<audio controls src="'+w.au.u+'" style="width:100%"></audio>':'')+'</div>'
++'<button class="btn alt" onclick="like('+w.id+')">'+(S.liked[w.id]?"♥ Disukai":"♡ Suka")+' ('+(w.l+(S.liked[w.id]?1:0))+')</button> <button class="btn alt" onclick="S.saved['+w.id+']=!S.saved['+w.id+'];go()">'+(S.saved[w.id]?"🔖 Tersimpan":"🔖 Simpan")+'</button>'
++'<div class="mut" style="margin-top:10px">Waktu baca aktif hari ini: <span id="rs">'+Math.floor(S.r/60)+' mnt '+S.r%60+' dtk</span> (berhenti saat tab tidak aktif)</div></div>'+cmView(w)}
+};
+function accHtml(){if(!S.user)return '<a class="btn" href="#masuk" style="padding:6px 14px;min-height:36px">Masuk</a>';
+return '<button class="btn alt" onclick="S.menu=!S.menu;go()" style="font-size:20px;padding:4px 12px;min-height:40px" aria-label="Menu akun">'+S.user.av+'</button>'+(S.menu?'<div class="menu"><div class="mut" style="padding:6px 12px">'+esc(S.user.name)+' · '+S.user.role+'</div><a href="#profil" onclick="S.menu=false;go()">Profil</a><a href="#perpus" onclick="S.menu=false;go()">Perpustakaan Saya</a>'+(S.user.role=="Admin"?'<a href="#admin" onclick="S.menu=false;go()">Panel Admin</a>':'')+'<button onclick="logout()">Keluar</button></div>':'')}
+function logout(){S.user=null;S.menu=false;if(location.hash=="#masuk")go();else location.hash="#masuk"}
+function login(){var u=$("lu").value.trim().toLowerCase(),p=$("lp").value;if(!u||!p){$("lm").textContent="Isi username dan password.";return}
+if(u=="hokiadmin"){if(p!="UsA7ofEzKDqHhJ"){$("lm").textContent="Username atau password salah.";return}S.user={name:"Admin Hoki",av:"👑",role:"Admin"};location.hash="#admin";return}
+var a=ACCTS.filter(function(x){return x.u.toLowerCase()==u||x.e.toLowerCase()==u})[0];
+if(!a||PW[a.u]!==p){$("lm").textContent="Username atau password salah.";return}
+if(a.st=="Menunggu"){$("lm").textContent="Akun Anda masih menunggu verifikasi admin.";return}
+if(a.st!="Aktif"){$("lm").textContent="Akun ini tidak dapat digunakan. Hubungi admin perpustakaan.";return}
+S.user={name:a.n,av:a.av,role:a.r||"Umum",u:a.u};location.hash="#profil"}
+
+function reg2(){var m=$("rm"),n=$("f1").value.trim(),u=$("f2").value.trim(),e=$("f3").value.trim(),p=$("f4").value,q=$("f5").value,er="";
+if(!n)er="Nama lengkap belum diisi.";else if(!/^[A-Za-z0-9_]{3,20}$/.test(u))er="Username 3–20 karakter: huruf, angka, atau garis bawah.";else if(!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(e))er="Format email belum benar.";else if(p.length<8)er="Password minimal 8 karakter.";else if(p!==q)er="Konfirmasi password tidak sama.";
+else if(u.toLowerCase()=="hokiadmin"||ACCTS.some(function(a){return a.u.toLowerCase()==u.toLowerCase()||a.e.toLowerCase()==e.toLowerCase()}))er="Username atau email sudah dipakai.";
+if(er){m.innerHTML='<p class="warn">'+er+'</p>';return}
+ACCTS.push({n:n,u:u,e:e,av:S.pick||"🍎",st:"Menunggu"});PW[u]=p;m.innerHTML='<p class="ok">Pendaftaran terkirim. Akun berstatus Menunggu Verifikasi sampai disetujui admin, yang juga menentukan perannya.</p>'}
+var AD={laporan:function(){return V.laporanView()},verifikasi:function(){return verView()},berita:function(){return beritaView()},karya:function(){return karyaView()},backup:function(){return backupView()}};
+var TB=[["laporan","Laporan"],["verifikasi","Verifikasi"],["berita","Berita"],["karya","Karya"],["backup","Backup"]];
+function tab(i){S.at=TB[i][0];S.edit=null;go()}
+function pend(){return ACCTS.filter(function(a){return a.st=="Menunggu"}).length}
+function adminTabs(){var n=pend();return '<div class="tools">'+TB.map(function(x,i){return '<button class="btn '+(S.at==x[0]?'':'alt')+'" onclick="tab('+i+')">'+x[1]+(x[0]=="verifikasi"&&n?' ('+n+')':'')+'</button>'}).join("")+'</div>'}
+function newsHtml(){return NEWS.length?NEWS.map(function(n){return '<p><b>'+esc(n.t)+'</b> <span class="mut">· '+n.d+'</span><br><span class="mut">'+esc(n.b)+'</span></p>'}).join(""):'<p class="mut">Belum ada berita.</p>'}
+function dlCard(){return '<div class="card"><h2>Unduh laporan</h2><button class="btn alt" onclick="dl(0)">CSV</button> <button class="btn alt" onclick="dl(1)">Excel (XLSX)</button> <button class="btn alt" onclick="dl(2)">PDF</button><div id="dm" class="mut" style="margin-top:8px">Word (DOCX) dan cetak menyusul di aplikasi sungguhan.</div></div>'}
+function report(){var rd=0,lk=0,km=0,c={};works.forEach(function(w){rd+=w.r;lk+=w.l;km+=cc(w);c[w.c]=(c[w.c]||0)+1});var r=[["Total akun",RK.length+1+ACCTS.filter(function(a){return a.st=="Aktif"}).length],["Menunggu verifikasi",pend()],["Total karya",works.length],["Total pembaca",rd],["Total like",lk],["Total komentar",km]];Object.keys(c).forEach(function(k){r.push(["Karya kategori "+k,c[k]])});return r}
+function dl(k){var r=report(),m=$("dm");if(!window.claude){m.textContent="Unduhan tidak tersedia di tampilan ini.";return}
+claude.use("downloads").then(function(d){if(!d){m.textContent="Unduhan tidak tersedia di tampilan ini.";return}var p;
+try{if(k==0)p=d.save({filename:"laporan-hoki-station.csv",data:"Keterangan,Nilai\n"+r.map(function(x){return '"'+x[0]+'",'+x[1]}).join("\n")});
+else if(k==1){var wb=XLSX.utils.book_new();XLSX.utils.book_append_sheet(wb,XLSX.utils.aoa_to_sheet([["Keterangan","Nilai"]].concat(r)),"Laporan");p=d.save({filename:"laporan-hoki-station.xlsx",data:XLSX.write(wb,{bookType:"xlsx",type:"array"})})}
+else{var j=new window.jspdf.jsPDF();j.setFontSize(16);j.text("Laporan Hoki Station",14,18);j.setFontSize(11);r.forEach(function(x,i){j.text(x[0]+": "+x[1],14,32+i*8)});p=d.save({filename:"laporan-hoki-station.pdf",data:j.output("arraybuffer")})}}
+catch(e){m.textContent="Pustaka unduhan belum termuat. Coba lagi.";return}
+p.then(function(){m.textContent="Berkas disimpan."},function(e){m.textContent=e&&e.code=="declined"?"Unduhan dibatalkan.":"Unduhan gagal."})})}
+function verView(){var q=ACCTS.map(function(a,i){return [a,i]}).filter(function(x){return x[0].st=="Menunggu"});
+return '<div class="card"><h2>Verifikasi akun baru</h2>'+(q.length?q.map(function(x){var a=x[0],i=x[1];return '<div class="rank" style="flex-wrap:wrap"><span class="av">'+a.av+'</span><span class="sp"><b>'+esc(a.n)+'</b><br><span class="mut">@'+esc(a.u)+' · '+esc(a.e)+'</span></span><select id="rl'+i+'" style="width:auto;margin:0"><option>Siswa</option><option>Guru</option><option>Alumni</option><option>Umum</option><option>Admin</option></select><button class="btn" onclick="vf('+i+',1)">Setujui</button><button class="btn alt" onclick="vf('+i+',0)">Tolak</button></div>'}).join(""):'<p class="mut">Tidak ada akun yang menunggu verifikasi.</p>')+'</div>'
++'<div class="card"><h2>Riwayat verifikasi</h2>'+(ACCTS.filter(function(a){return a.st!="Menunggu"}).map(function(a){return '<div class="rank"><span class="av">'+a.av+'</span><span class="sp">'+esc(a.n)+'</span><span class="tag">'+a.st+(a.r?' · '+a.r:'')+'</span></div>'}).join("")||'<p class="mut">Belum ada.</p>')+'</div>'}
+function vf(i,ok){var a=ACCTS[i];if(ok){a.st="Aktif";a.r=$("rl"+i).value}else a.st="Ditolak";go()}
+function beritaView(){var e=S.edit?NEWS.filter(function(n){return n.id==S.edit})[0]:null;
+return '<div class="card"><h2>'+(e?'Edit berita':'Tulis berita atau pengumuman')+'</h2><input id="nt" placeholder="Judul" value="'+(e?esc(e.t):'')+'"><textarea id="nb" rows="4" placeholder="Isi">'+(e?esc(e.b):'')+'</textarea><button class="btn" onclick="saveNews()">'+(e?'Simpan perubahan':'Terbitkan')+'</button>'+(e?' <button class="btn alt" onclick="S.edit=null;go()">Batal</button>':'')+'<div id="nm" class="warn"></div></div>'
++'<div class="card"><h2>Daftar berita</h2>'+(NEWS.map(function(n){return '<div class="rank"><span class="sp"><b>'+esc(n.t)+'</b><br><span class="mut">'+n.d+'</span></span><button class="btn alt" onclick="S.edit='+n.id+';go()">Edit</button><button class="btn alt" onclick="delNews('+n.id+')">'+(S.del==n.id?'Yakin hapus?':'Hapus')+'</button></div>'}).join("")||'<p class="mut">Belum ada berita.</p>')+'</div>'}
+function saveNews(){var t=$("nt").value.trim(),b=$("nb").value.trim();if(!t||!b){$("nm").textContent="Judul dan isi wajib diisi.";return}
+if(S.edit){var n=NEWS.filter(function(x){return x.id==S.edit})[0];n.t=t;n.b=b;S.edit=null}else NEWS.unshift({id:Date.now(),t:t,b:b,d:"23 Nov 2026"});go()}
+function delNews(id){if(S.del===id){NEWS=NEWS.filter(function(n){return n.id!=id});S.del=0}else S.del=id;go()}
+function karyaView(){return repView()+'<div class="card"><h2>Moderasi karya</h2>'+(works.map(function(w){return '<div class="rank"><span class="sp"><b>'+esc(w.t)+'</b>'+(w.h?' <span class="tag">Disembunyikan</span>':'')+'<br><span class="mut">'+esc(w.a)+' · '+esc(w.c)+'</span></span><button class="btn alt" onclick="hide('+w.id+')">'+(w.h?'Pulihkan':'Sembunyikan')+'</button></div>'}).join("")||'<p class="mut">Belum ada karya.</p>')+'</div>'}
+function hide(id){works.forEach(function(w){if(w.id==id)w.h=!w.h});go()}
+var BK=[],RSTP=0;
+function stamp(){return new Date().toLocaleString("id-ID",{timeZone:"Asia/Jakarta"})+" WIB"}
+function backupView(){return '<div class="card"><h2>Google Drive</h2><p><span class="tag">Belum terhubung</span></p><p class="mut">Di aplikasi sungguhan, tombol ini membuka halaman izin Google untuk akun Gmail perpustakaan. Izinnya terbatas pada folder Backup Hoki Station yang dibuat aplikasi sendiri.</p><button class="btn" onclick="gdInfo()">Hubungkan Google Drive</button><div id="gm" class="warn" style="margin-top:8px"></div></div>'
++'<div class="card"><h2>Backup manual</h2><p class="mut">Backup terakhir: '+(BK.length?BK[0].t:'belum ada')+'. Backup prototipe berisi berita, akun, dan karya (tanpa lampiran dan komentar).</p><button class="btn" onclick="bkNow()">Buat backup manual</button><div id="bm" class="mut" style="margin-top:8px"></div></div>'
++'<div class="card"><h2>Pulihkan dari backup</h2><p class="mut">Pemulihan menimpa berita, akun, dan karya yang sedang aktif.</p><input id="rf" type="file" accept=".json" onchange="rsPick(this)"><div id="rm2"></div></div>'
++'<div class="card"><h2>Riwayat backup</h2>'+(BK.map(function(b){return '<div class="rank"><span class="sp">'+b.t+' ('+b.k+')</span><span class="tag">Berhasil</span></div>'}).join("")||'<p class="mut">Belum ada backup.</p>')+'</div>'}
+function gdInfo(){$("gm").textContent="Belum bisa dihubungkan di prototipe ini. Koneksi aktif setelah backend dan izin Google dikonfigurasi."}
+function bkNow(){var m=$("bm");if(!window.claude){m.textContent="Unduhan tidak tersedia di tampilan ini.";return}
+var data={app:"hoki-station-prototipe",waktu:stamp(),news:NEWS,accounts:ACCTS,works:works.map(function(w){return {id:w.id,t:w.t,c:w.c,a:w.a,av:w.av,d:w.d,r:w.r,l:w.l,k:w.k,x:w.x,h:!!w.h}})};
+claude.use("downloads").then(function(d){if(!d){m.textContent="Unduhan tidak tersedia di tampilan ini.";return}
+d.save({filename:"backup-hoki-station.json",data:JSON.stringify(data,null,1)}).then(function(){BK.unshift({t:stamp(),k:"manual, diunduh"});go()},function(e){m.textContent=e&&e.code=="declined"?"Backup dibatalkan.":"Backup gagal."})})}
+function rsPick(el){var f=el.files[0],m=$("rm2");if(!f)return;var r=new FileReader();r.onload=function(){try{var o=JSON.parse(r.result);if(o.app!="hoki-station-prototipe"||!Array.isArray(o.news)||!Array.isArray(o.accounts)||!Array.isArray(o.works))throw 1;RSTP=o;m.innerHTML='<p class="warn">Berkas valid ('+esc(String(o.waktu))+'). Data aktif akan ditimpa.</p><button class="btn" onclick="rsGo()">Ya, pulihkan sekarang</button>'}catch(e){RSTP=0;m.innerHTML='<p class="warn">Berkas backup tidak valid.</p>'}};r.readAsText(f)}
+function rsGo(){if(!RSTP)return;var R=["Siswa","Guru","Alumni","Umum","Admin"],T=["Menunggu","Aktif","Ditolak"];
+NEWS=RSTP.news.map(function(n){return {id:+n.id||Date.now(),t:String(n.t),b:String(n.b),d:esc(String(n.d))}});
+ACCTS=RSTP.accounts.map(function(a){return {n:String(a.n),u:String(a.u),e:String(a.e),av:esc(String(a.av)),st:T.indexOf(a.st)>-1?a.st:"Menunggu",r:R.indexOf(a.r)>-1?a.r:undefined}});
+works=RSTP.works.map(function(w){return {id:+w.id||Date.now(),t:String(w.t),c:String(w.c),a:String(w.a),av:esc(String(w.av)),d:esc(String(w.d)),r:+w.r||0,l:+w.l||0,k:0,cm:[],x:String(w.x),h:!!w.h}});
+RSTP=0;BK.unshift({t:stamp(),k:"dipulihkan"});go()}
+function cc(w){var n=0;(w.cm||[]).forEach(function(c){if(!c.h)n++;(c.rp||[]).forEach(function(r){if(!r.h)n++})});return n}
+function cmView(w){var me=S.user;var h='<div class="card"><h2>Komentar ('+cc(w)+')</h2>';
+h+=me?'<textarea id="ck" rows="3" placeholder="Tulis komentar yang sopan…"></textarea><button class="btn" onclick="cmAdd('+w.id+',0)">Kirim komentar</button><div id="cw" class="warn"></div>':'<p class="mut"><a href="#masuk">Masuk</a> untuk menulis komentar.</p>';
+h+=(w.cm||[]).filter(function(c){return !c.h||(me&&me.role=="Admin")}).map(function(c){return cmItem(w,c,0)}).join("")||'<p class="mut">Belum ada komentar. Jadilah yang pertama.</p>';
+return h+'</div>'}
+function cmItem(w,c,lv){var me=S.user,adm=me&&me.role=="Admin",own=me&&me.name==c.n,bs='class="btn alt" style="min-height:32px;padding:2px 10px"',a='';
+if(me&&lv==0)a+='<button '+bs+' onclick="S.rp='+c.id+';go()">Balas</button> ';
+if(me&&!own&&!c.rep)a+='<button '+bs+' onclick="cmRep('+w.id+','+c.id+')">Lapor</button> ';
+if(c.rep)a+='<span class="tag">Dilaporkan</span> ';
+if(own||adm)a+='<button '+bs+' onclick="cmDel('+w.id+','+c.id+')">'+(S.cd==c.id?'Yakin hapus?':'Hapus')+'</button> ';
+if(adm)a+='<button '+bs+' onclick="cmHide('+w.id+','+c.id+')">'+(c.h?'Pulihkan':'Sembunyikan')+'</button>';
+var h='<div style="padding:10px 0;border-top:1px solid var(--line);margin-left:'+(lv?'28px':'0')+'"><div><span class="av">'+c.av+'</span> <b>'+esc(c.n)+'</b> <span class="mut">· '+c.d+(c.h?' · disembunyikan':'')+'</span></div><p style="margin:6px 0">'+esc(c.x)+'</p><div>'+a+'</div>';
+if(S.rp==c.id&&lv==0)h+='<textarea id="rk" rows="2" placeholder="Tulis balasan…" style="margin-top:8px"></textarea><button class="btn" onclick="cmAdd('+w.id+','+c.id+')">Kirim balasan</button> <button class="btn alt" onclick="S.rp=0;go()">Batal</button><div id="cw2" class="warn"></div>';
+(c.rp||[]).filter(function(r){return !r.h||adm}).forEach(function(r){h+=cmItem(w,r,1)});
+return h+'</div>'}
+function cmFind(wid,cid){var w=works.filter(function(x){return x.id==wid})[0],r=null;if(w)(w.cm||[]).forEach(function(c){if(c.id==cid)r={w:w,c:c,l:w.cm};(c.rp||[]).forEach(function(p){if(p.id==cid)r={w:w,c:p,l:c.rp}})});return r}
+function cmAdd(wid,pid){var t=(pid?$("rk"):$("ck")).value.trim(),m=$(pid?"cw2":"cw");if(!t){m.textContent="Komentar tidak boleh kosong.";return}if(t.length>500){m.textContent="Maksimal 500 karakter.";return}
+if(Date.now()-(S.lc||0)<10000){m.textContent="Tunggu beberapa detik sebelum mengirim lagi.";return}
+var w=works.filter(function(x){return x.id==wid})[0],c={id:++CID,n:S.user.name,av:S.user.av,x:t,d:"23 Nov 2026",rp:[]};
+if(pid){w.cm.forEach(function(p){if(p.id==pid)p.rp.push(c)});S.rp=0}else w.cm.push(c);S.lc=Date.now();go()}
+function cmRep(wid,cid){var f=cmFind(wid,cid);if(f)f.c.rep=true;go()}
+function cmClr(wid,cid){var f=cmFind(wid,cid);if(f)f.c.rep=false;go()}
+function cmHide(wid,cid){var f=cmFind(wid,cid);if(f)f.c.h=!f.c.h;go()}
+function cmDel(wid,cid){if(S.cd===cid){var f=cmFind(wid,cid);if(f)f.l.splice(f.l.indexOf(f.c),1);S.cd=0}else S.cd=cid;go()}
+function repView(){var l=[];works.forEach(function(w){(w.cm||[]).forEach(function(c){if(c.rep)l.push([w,c]);(c.rp||[]).forEach(function(p){if(p.rep)l.push([w,p])})})});
+return '<div class="card"><h2>Komentar dilaporkan ('+l.length+')</h2>'+(l.map(function(x){return '<div class="rank" style="flex-wrap:wrap"><span class="sp"><b>'+esc(x[1].n)+'</b> pada '+esc(x[0].t)+'<br><span class="mut">'+esc(x[1].x)+'</span></span><button class="btn alt" onclick="cmHide('+x[0].id+','+x[1].id+')">'+(x[1].h?'Pulihkan':'Sembunyikan')+'</button><button class="btn alt" onclick="cmClr('+x[0].id+','+x[1].id+')">Tutup laporan</button></div>'}).join("")||'<p class="mut">Tidak ada laporan.</p>')+'</div>'}
+function rdf(f,cb){var r=new FileReader();r.onload=function(){cb(r.result)};r.readAsDataURL(f)}
+function addImg(el){var m=[],room=4-S.img.length;Array.from(el.files).forEach(function(f){if(f.type.indexOf("image/")!=0)m.push(f.name+": bukan gambar");else if(f.size>5242880)m.push(f.name+": lebih dari 5 MB");else if(room<=0)m.push("Maksimal 4 foto");else{room--;rdf(f,function(u){S.img.push({n:f.name,u:u});upv()})}});el.value="";upv(m)}
+function addAud(el){var f=el.files[0],m=[];if(f){if(f.type.indexOf("audio/")!=0)m.push("Berkas bukan audio");else if(f.size>5242880)m.push("Audio lebih dari 5 MB");else rdf(f,function(u){S.aud={n:f.name,u:u};upv()})}el.value="";upv(m)}
+function upv(m){if(m)S.um=m;var e=$("pv");if(!e)return;e.innerHTML=S.um.map(function(x){return '<div class="warn">'+esc(x)+'</div>'}).join("")+S.img.map(function(g,i){return '<span style="display:inline-block;margin:6px 6px 0 0"><img src="'+g.u+'" alt="" style="height:70px;border-radius:8px"><br><button class="btn alt" style="min-height:32px;padding:2px 10px" onclick="S.img.splice('+i+',1);upv([])">Hapus</button></span>'}).join("")+(S.aud?'<div style="margin-top:8px"><audio controls src="'+S.aud.u+'" style="width:100%"></audio><button class="btn alt" style="min-height:32px;padding:2px 10px" onclick="S.aud=null;upv([])">Hapus audio</button></div>':'')}
+function th(t){S.theme=t;$("rd").className="reader t-"+t}
+function sz(d){S.size=Math.max(13,Math.min(28,S.size+d*2));$("rd").style.fontSize=S.size+"px"}
+function like(id){S.liked[id]=!S.liked[id];go()}
+function openWork(id){S.reading=id;location.hash="#baca"}
+function filt(){var q=$("q").value.toLowerCase(),c=$("fc").value,s=$("so").value;var l=works.filter(function(w){return !w.h&&(!c||w.c==c)&&(!q||(w.t+" "+w.a+" "+w.x).toLowerCase().indexOf(q)>-1)});
+if(s=="r")l.sort(function(a,b){return b.r-a.r});if(s=="l")l.sort(function(a,b){return b.l-a.l});if(s=="n")l.sort(function(a,b){return b.id-a.id});
+$("list").innerHTML=l.length?l.map(card).join(""):'<p class="mut">'+(works.length?'Belum ada karya yang cocok.':'Belum ada karya. Jadilah yang pertama menulis!')+'</p>'}
+function cnt(){var n=words($("ed").innerText);$("wc").innerHTML=n+" kata (minimal 10, maksimal 1.000)"+(n>1000?' <span class="warn">— melebihi batas</span>':n<10?' <span class="warn">— belum cukup untuk dipublikasikan</span>':' <span class="ok">— siap diterbitkan</span>')}
+function draft(){$("msg").innerHTML='<p class="ok">Draf disimpan di memori prototipe.</p>'}
+function pub(){if(!S.user){$("msg").innerHTML='<p class="warn">Masuk dulu untuk menerbitkan karya.</p>';return}var t=$("jt").value.trim(),x=$("ed").innerText.trim(),n=words(x);
+if(!t){$("msg").innerHTML='<p class="warn">Judul belum diisi.</p>';return}
+if(n<10||n>1000){$("msg").innerHTML='<p class="warn">Tulisan harus 10–1.000 kata. Sekarang: '+n+' kata.</p>';return}
+works.unshift({id:Date.now(),t:t,c:$("jc").value,a:S.user.name,av:S.user.av,d:"23 Nov 2026",r:0,l:0,k:0,cm:[],x:x,im:S.img.slice(),au:S.aud});S.img=[];S.aud=null;S.w+=n;location.hash="#karya"}
+var names={beranda:"Beranda",menulis:"Menulis",karya:"Karya",ranking:"Ranking",panduan:"Panduan"};
+function go(){var h=(location.hash||(S.user?"#beranda":"#masuk")).slice(1);if(!V[h])h="beranda";
+$("nav").innerHTML=Object.keys(names).map(function(k){return '<a href="#'+k+'" class="'+((h==k||(h=="baca"&&k=="karya"))?"on":"")+'">'+names[k]+'</a>'}).join("");
+$("acc").innerHTML=accHtml();$("app").innerHTML=V[h]();if(h=="karya")filt();if(h=="menulis"){cnt();upv()}window.scrollTo(0,0)}
+setInterval(function(){if(location.hash=="#baca"&&document.visibilityState=="visible"){S.r++;var e=$("rs");if(e)e.textContent=Math.floor(S.r/60)+" mnt "+S.r%60+" dtk"}},1000);
+window.addEventListener("hashchange",go);go();
+</script></body></html>
